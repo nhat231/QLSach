@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Quản lý nhân viên";
+}
+@model IEnumerable<QLSach.Models.ListNhanVienVm>;
+<div style="padding:4px 0px 4px 4px;float:right;">
+    <a asp-controller="NhanVien" asp-action="Create" class="btn btn-primary" style="font-size:14px">
+        Thêm mới nhân viên
+    </a>
+</div>
+<table class="table" style="border:solid 1px;font-size:13px">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" style="border:solid 1px;font-size:13px">Mã nhân viên</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Tên nhân viên</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Mật khẩu</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Số điện thoại</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Sửa</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr maNV=@team.MANV>
+                <td style="border:solid 1px;font-size:13px">@team.MANV</td>
+                <td style="border:solid 1px;font-size:13px">@team.TENNV</td>
+                <td style="border:solid 1px;font-size:13px"><input style="border:none" type="password" value="@team.MATKHAU" /></td>
+                <td style="border:solid 1px;font-size:13px">@team.SDT</td>
+                <td style="border:solid 1px;font-size:13px">
+                    <a href="@Url.Action("Edit", "NhanVien", new { MANV=@team.MANV })">
+                        <span class="fa fa-edit" style="color:blue;font-size:18px"></span>
+                    </a>
+                </td>
+                <td style="border:solid 1px;font-size:13px">
+                    <a href="#" name='delete'>
+                        <span class="fa fa-trash" style="color:red;font-size:18px"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).on('click', "a[name='delete']", function (e) {
+            //e.preventDefault();
+            let value = $(this).closest('tr').attr('maNV')
+            if (confirm('Có chắc chắn xóa?')) {
+                $.ajax({
+                    url: "/NhanVien/Delete",
+                    type: "post",
+                    data: {
+                        _maNV: value
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert('Xóa thành công.')
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+}

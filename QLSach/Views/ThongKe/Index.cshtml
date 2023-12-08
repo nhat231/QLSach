@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Thống kê doanh thu";
+}
+@model IEnumerable<QLSach.Models.ListDoanhThuVm>;
+<div style="padding:4px 0px 4px 4px;float:right;">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <input type="date" style="height:35px" class="form-control" id="ngayxuat1">
+        </div>
+        Đến
+        <div class="form-group col-sm-4">
+            <input type="date" style="height:35px" class="form-control" id="ngayxuat2">
+        </div>
+        <div class="form-group col-sm-3">
+            <button class="btn btn-primary" style="font-size:14px" id="lockq">
+                Lọc kết quả
+            </button>
+        </div>
+    </div>
+    
+</div>
+<table class="table" style="border:solid 1px;font-size:13px" id="ssssss">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" style="border:solid 1px">Mã hóa đơn</th>
+            <th scope="col" style="border:solid 1px">Ngày xuất</th>
+            <th scope="col" style="border:solid 1px">Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody id="tableDoanhThu">
+        
+    </tbody>
+</table>
+<div style="padding:4px 0px 4px 4px;float:right;">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <span style="color:red">Tổng tiền</span>
+        </div>
+        <div class="form-group col-sm-8">
+            <input type="text" style="height:25px" class="form-control" id="tongtien" name="tontien" disabled>
+        </div>
+        
+    </div>
+
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+            $('#ngayxuat1').val(today);
+            $('#ngayxuat2').val(today);
+            LoadDoanhThu(today, today)
+
+            
+           
+        });
+        $('#lockq').click(function () {
+            LoadDoanhThu($('#ngayxuat1').val().trim(), $('#ngayxuat2').val().trim())
+        })
+        function LoadDoanhThu(ngayxuat1, ngayxuat2) {
+            $.ajax({
+                type: "get",
+                url: "/ThongKe/LoadDoanhThu",
+                traditional: true,
+                data: {
+                    ngayxuat1: ngayxuat1,
+                    ngayxuat2: ngayxuat2
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        $("#tableDoanhThu").empty();
+                        $.each(data.listDoanhThu, function (index, value) {
+                            let tr = '<tr>'
+                            tr += '<td class="tdstyle" style="border:solid 1px;font-size:13px">' + value.mahd + '</td>';
+                            tr += '<td class="tdstyle" style="border:solid 1px;font-size:13px">' + value.ngayxuat + '</td>';
+                            tr += '<td class="tdstyle" style="border:solid 1px;font-size:13px">' + value.tongtien + '</td>';
+                            tr += '</tr>';
+                            $("#tableDoanhThu").append(tr);
+                        });
+                    }
+                    var table = document.getElementById("ssssss"), sumVal = 0;
+                    for (var i = 1; i < table.rows.length; i++) {
+                        sumVal = sumVal + parseInt(table.rows[i].cells[2].innerHTML);
+                    }
+                    $('#tongtien').val(sumVal);
+                }
+            });
+        };
+        
+    </script>
+}
+
+            

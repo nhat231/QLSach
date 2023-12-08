@@ -1,0 +1,32 @@
+﻿@model QLSach.Models.Entities.NHANVIENS;
+<div class="row pb-2" style="padding: 15px 15px 0 0">
+    <h4 class="text-primary" style="font-size:18px">Sửa thông tin nhân viên</h4>
+</div>
+<form method="post" asp-controller="NhanVien" asp-action="Edit">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>Mã nhân viên <span style="color:red">(*)</span></label>
+            <input asp-for="MANV" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Tên nhân viên <span style="color:red">(*)</span></label>
+            <input asp-for="TENNV" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Mật khẩu</label>
+            <input asp-for="MATKHAU" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Số điện thoại</label>
+            <input asp-for="SDT" class="form-control" type="text" />
+        </div>
+    </div>
+    <div style="margin-top:20px">
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-controller="NhanVien" asp-action="Index" class="btn btn-secondary">
+            Quay lại
+        </a>
+    </div>
+    
+</form>
+

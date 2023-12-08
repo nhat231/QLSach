@@ -1,0 +1,58 @@
+﻿@model QLSach.Models.Entities.SACHS;
+<form method="post" asp-controller="Home" asp-action="Create">
+    <div class="input-group mb-3" style="padding: 0 10px;text-align:center">
+        @if (@TempData["Message"] != null)
+        {
+            <label style="color:red;">@TempData["Message"]</label>
+        }
+    </div>
+    <div class="row pb-2">
+        <h4 class="text-primary" style="font-size:18px">Thêm mới sách</h4>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>Mã sách <span style="color:red">(*)</span></label>
+            <input asp-for="MASACH" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Tên sách <span style="color:red">(*)</span></label>
+            <input asp-for="TENSACH" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Tên tác giả</label>
+            <input asp-for="TENTACGIA" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Nhà xuất bản</label>
+            <input asp-for="NHAXB" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Chủ đề</label>
+            <input asp-for="CHUDE" class="form-control" type="text" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Số lượng</label>
+            <input asp-for="SOLUONG" class="form-control" type="number" min="1" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Đơn giá</label>
+            <input asp-for="DONGIA" class="form-control" type="number" min="1" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Năm xuất bản</label>
+            <input asp-for="NAMXB" class="form-control" type="number" min="2000" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>Ghi chú</label>
+            <input asp-for="GHICHU" class="form-control" type="text" />
+        </div>
+    </div>
+    <div style="margin-top:20px">
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+            Quay lại
+        </a>
+    </div>
+    
+</form>
+

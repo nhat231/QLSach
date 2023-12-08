@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Quản lý sách";
+}
+@model IEnumerable<QLSach.Models.ListSachVm>;
+<div style="padding:4px 0px 4px 4px;float:right;">
+    <a asp-controller="Home" asp-action="Create" class="btn btn-primary" style="font-size:14px">
+        Thêm mới sách
+    </a>
+</div>
+
+<table class="table" style="border:solid 1px;font-size:13px">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" style="border:solid 1px">Mã sách</th>
+            <th scope="col" style="border:solid 1px">Tên sách</th>
+            <th scope="col" style="border:solid 1px" >Tên tác giả</th>
+            <th scope="col" style="border:solid 1px" >Nhà xuất bản</th>
+            <th scope="col" style="border:solid 1px">Chủ đề</th>
+            <th scope="col" style="border:solid 1px">Số lượng</th>
+            <th scope="col" style="border:solid 1px">Đơn giá</th>
+            <th scope="col" style="border:solid 1px">Năm xuất bản</th>
+            <th scope="col" style="border:solid 1px">Ghi chú</th>
+            <th scope="col" style="border:solid 1px">Sửa</th>
+            <th scope="col" style="border:solid 1px">Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr maSach=@team.MASACH>
+                <td style="border:solid 1px">@team.MASACH</td>
+                <td style="border:solid 1px">@team.TENSACH</td>
+                <td style="border:solid 1px">@team.TENTACGIA</td>
+                <td style="border:solid 1px">@team.NHAXB</td>
+                <td style="border:solid 1px">@team.CHUDE</td>
+                <td style="border:solid 1px">@team.SOLUONG</td>
+                <td style="border:solid 1px">@team.DONGIA</td>
+                <td style="border:solid 1px">@team.NAMXB</td>
+                <td style="border:solid 1px">@team.GHICHU</td>
+                <td style="border:solid 1px">
+                    <a href="@Url.Action("Edit", "Home", new { MASACH=@team.MASACH })">
+                        <span class="fa fa-edit" style="color:blue;font-size:18px"></span>
+                    </a>
+                </td>
+                <td style="border:solid 1px">
+                    <a href="#" name='delete'>
+                        <span class="fa fa-trash" style="color:red;font-size:18px"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).on('click', "a[name='delete']", function (e) {
+            //e.preventDefault();
+            let value = $(this).closest('tr').attr('maSach')
+            if (confirm('Có chắc chắn xóa?')) {
+                $.ajax({
+                    url: "/Home/Delete",
+                    type: "post",
+                    data: {
+                        _maSach: value
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert('Xóa thành công.')
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+}

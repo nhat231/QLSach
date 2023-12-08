@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+@model IEnumerable<QLSach.Models.ListKhachHangVm>;
+<div style="padding:4px 0px 4px 4px;float:right;">
+    <a asp-controller="KhachHang" asp-action="Create" class="btn btn-primary" style="font-size:14px">
+        Thêm mới khách hàng
+    </a>
+</div>
+
+<table class="table" style="border:solid 1px;font-size:13px">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" style="border:solid 1px;font-size:13px">Mã khách hàng</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Tên khách hàng</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Địa chỉ</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Số điện thoại</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Sửa</th>
+            <th scope="col" style="border:solid 1px;font-size:13px">Xóa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr maKH=@team.MAKH>
+                <td style="border:solid 1px;font-size:13px">@team.MAKH</td>
+                <td style="border:solid 1px;font-size:13px">@team.TENKH</td>
+                <td style="border:solid 1px;font-size:13px">@team.DIACHI</td>
+                <td style="border:solid 1px;font-size:13px">@team.SDT</td>
+                <td style="border:solid 1px;font-size:13px">
+                    <a href="@Url.Action("Edit", "KhachHang", new { MAKH=@team.MAKH })">
+                        <span class="fa fa-edit" style="color:blue;font-size:18px"></span>
+                    </a>
+                </td>
+                <td style="border:solid 1px;font-size:13px">
+                    <a href="#" name='delete'>
+                        <span class="fa fa-trash" style="color:red;font-size:18px"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).on('click', "a[name='delete']", function (e) {
+            //e.preventDefault();
+            let value = $(this).closest('tr').attr('maKH')
+            if (confirm('Có chắc chắn xóa?')) {
+                $.ajax({
+                    url: "/Khachhang/Delete",
+                    type: "post",
+                    data: {
+                        _maKH: value
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert('Xóa thành công.')
+                            window.location.reload();
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+}
